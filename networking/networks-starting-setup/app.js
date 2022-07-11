@@ -68,8 +68,10 @@ app.get('/people', async (req, res) => {
 });
 
 mongoose.connect(
-  'mongodb://host.docker.internal:27017/swfavorites',
-  // docker keyphrase, container translates this to your host ip address and is able to connect to DB
+  // docker run -d --name mongodb mongo used to spin up default mongodb container
+  // ip address taken from inspecting this container and placed into url
+  // works but requires manual lookup and hardcoded connections
+  'mongodb://172.17.0.2:27017/swfavorites',
   { useNewUrlParser: true },
   (err) => {
     if (err) {
@@ -79,3 +81,18 @@ mongoose.connect(
     }
   }
 );
+
+// below code is for connecting to a locally hosted mongodb installation/db
+
+// mongoose.connect(
+//   'mongodb://host.docker.internal:27017/swfavorites',
+//   // docker keyphrase, container translates this to your host ip address and is able to connect to DB
+//   { useNewUrlParser: true },
+//   (err) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       app.listen(3000);
+//     }
+//   }
+// );
