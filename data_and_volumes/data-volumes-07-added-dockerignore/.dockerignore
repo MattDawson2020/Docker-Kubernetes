@@ -1,0 +1,9 @@
+node_modules
+
+# adding a dockerignore file is an easy way to tell docker to ignore certain files when you use a copy .
+# in this case we don't have a node_modules file because we have been using a bind mounted project directoy
+# but this could be used in future if there is an existing node_modules but you want to ignore it
+
+.git
+
+# a common addition, no need to pull your git folder in aswell
