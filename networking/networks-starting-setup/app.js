@@ -68,10 +68,11 @@ app.get('/people', async (req, res) => {
 });
 
 mongoose.connect(
-  // docker run -d --name mongodb mongo used to spin up default mongodb container
-  // ip address taken from inspecting this container and placed into url
-  // works but requires manual lookup and hardcoded connections
-  'mongodb://172.17.0.2:27017/swfavorites',
+  // docker network create favorites-net  to create a network for your containers to share, docker handles overhead for you
+  // docker run -d --name mongodb --network favorites-net mongo can be used to initialize mongo container inside network
+  // docker run --name favorites -d --rm -p 3000:3000 --network favorites-net favorites-node to initialize container in network
+  // we can now use the mongodb name directly because the server container will be in the same network, docker will translate name to ip address
+  'mongodb://mongodb:27017/swfavorites',
   { useNewUrlParser: true },
   (err) => {
     if (err) {
@@ -82,8 +83,23 @@ mongoose.connect(
   }
 );
 
-// below code is for connecting to a locally hosted mongodb installation/db
+// code for manual ip connection between containers
+// mongoose.connect(
+//   // docker run -d --name mongodb mongo used to spin up default mongodb container
+//   // ip address taken from inspecting this container and placed into url
+//   // works but requires manual lookup and hardcoded connections
+//   'mongodb://172.17.0.2:27017/swfavorites',
+//   { useNewUrlParser: true },
+//   (err) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       app.listen(3000);
+//     }
+//   }
+// );
 
+// below code is for connecting to a locally hosted mongodb installation/db
 // mongoose.connect(
 //   'mongodb://host.docker.internal:27017/swfavorites',
 //   // docker keyphrase, container translates this to your host ip address and is able to connect to DB
