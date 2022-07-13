@@ -4,6 +4,8 @@ import GoalInput from './components/goals/GoalInput';
 import CourseGoals from './components/goals/CourseGoals';
 import ErrorAlert from './components/UI/ErrorAlert';
 
+// docker run --name goals-frontend -v "/Users/mattdawson/Projects/Docker_and_Kubernetes/multi_container_app/multi-01-starting-setup/frontend/src":/app/src --rm -p 3000:3000 goals-react
+// use this to run with a bind mount to allow source code changes to be instantly picked up
 function App() {
   const [loadedGoals, setLoadedGoals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

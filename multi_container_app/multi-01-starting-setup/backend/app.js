@@ -8,6 +8,9 @@ const morgan = require('morgan');
 
 const Goal = require('./models/goal');
 
+// docker run --name goals-backend -v logs:/app/logs -v "/Users/mattdawson/Projects/Docker_and_Kubernetes/multi_container_app/multi-01-starting-setup/backend":/app -v /app/node_modules -d --rm -p 80:80 --network goals -e MONGODB_USERNAME=matt goals-node
+// use this to run the server with a named volume to store logs between restarts, a bind mount for project directory to track changes, and an anonymous volume to make sure node_modules persists
+
 const app = express();
 
 const accessLogStream = fs.createWriteStream(
@@ -84,7 +87,7 @@ app.delete('/goals/:id', async (req, res) => {
 });
 
 mongoose.connect(
-  'mongodb://matt:secret@mongodb:27017/course-goals?authSource=admin',
+  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/course-goals?authSource=admin`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
