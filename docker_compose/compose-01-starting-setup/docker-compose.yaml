@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=matt
+    #   - MONGO_INITDB_ROOT_PASSWORD=secret
+      # MONGO_INITDB_ROOT_USERNAME: matt
+      # MONGO_INITDB_ROOT_PASSWORD: secret
+      # both of these syntax's work, its a preference
+    env_file:
+      - ./env/mongo.env
+      # can also use this env file to use a separate .env folder, useful because you can gitignore/ separate for production
+
+  backend:
+    build: ./backend
+    # build:
+    #   context: ./backend
+    #   dockerfile: Dockerfile
+    #   alternate syntax that also works
+    ports:
+      - "80:80"
+      # "host_port:container/internal_port"
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+
+  frontend:
+    build : ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - /app/node_modules
+    # stdin_open: true
+    # tty: true
+    # these can be used to let the frontend start in interactive mode, doesn't seem to be necessary anymore
+    depends_on:
+      - backend
+
+volumes:
+  data:
+  logs:
