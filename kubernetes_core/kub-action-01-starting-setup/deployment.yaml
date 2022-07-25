@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: second-app
+    # matchExpressions:
+    #   - {key: app, operator: In, values: [second-app, first-app]}
+    # this covers the same as the above and also would allow a first-app label pod
+  template:
+    metadata:
+      labels:
+        app: second-app
+    spec:
+      containers:
+        - name: second-node
+          image: mattdawson2020/kub-first-app
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            period: 10
+            initialDelaySeconds: 5
