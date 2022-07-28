@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: host-pvc
+spec:
+  volumeName: host-pvc
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  # counterpart to the capacity resource in the volume itself
+  resources:
+    requests:
+      # number in volume is the MAX, so we could request less here, but NOT more
+      storage: 1Gi
